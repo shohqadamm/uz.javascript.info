@@ -1,8 +1,8 @@
-# Va'dalar bilan ishlashda xato
+# Promiselar bilan ishlashda xato
 
-Asinxron harakatlar ba'zan muvaffaqiyatsiz bo'lishi mumkin: xato bo'lsa, tegishli va'da rad etiladi. Masalan, masofaviy server mavjud bo'lmasa, `fetch` bajarilmaydi. Xatolarni (rad etishlarni) boshqarish uchun `.catch` dan foydalanishimiz mumkin.
+Asinxron harakatlar ba'zan muvaffaqiyatsiz bo'lishi mumkin: xato bo'lsa, tegishli Promise rad etiladi. Masalan, masofaviy server mavjud bo'lmasa, `fetch` bajarilmaydi. Xatolarni (rad etishlarni) boshqarish uchun `.catch` dan foydalanishimiz mumkin.
 
-Va'da zanjiri bu jihatdan juda yaxshi. Va'da rad etilganda, boshqaruv zanjir bo'ylab eng yaqin rad etuvchiga sakraydi. Bu amalda juda qulay.
+Promise zanjiri bu jihatdan juda yaxshi. Promise rad etilganda, boshqaruv zanjir bo'ylab eng yaqin rad etuvchiga sakraydi. Bu amalda juda qulay.
 
 Masalan, URL ostidagi kodda xato (bunday server yo'q) va `.catch` xatoni boshqaradi:
 
@@ -47,11 +47,11 @@ fetch('/article/promise-chaining/user.json')
 */!*
 ```
 
-Odatda `.catch` umuman bajarilmaydi, chunki xatolar yo'q. Ammo agar yuqoridagi va'dalardan birortasi rad etsa (tarmoq muammosi yoki yaroqsiz json yoki boshqa narsalar), u buni bajaradi.
+Odatda `.catch` umuman bajarilmaydi, chunki xatolar yo'q. Ammo agar yuqoridagi promiselardan birortasi rad etsa (tarmoq muammosi yoki yaroqsiz json yoki boshqa narsalar), u buni bajaradi.
 
 ## Yashirin try..catch
 
-Va'da ijrochisi va va'da ishlovchilarining kodi atrofida "ko'rinmas `try..catch`" bor. Agar xato yuz bersa, u ushlanib qoladi va rad etish sifatida qabul qilinadi.
+Promize ijrochisi va promise ishlovchilarining kodi atrofida "ko'rinmas `try..catch`" bor. Agar xato yuz bersa, u ushlanib qoladi va rad etish sifatida qabul qilinadi.
 
 Masalan, ushbu kod:
 
@@ -75,7 +75,7 @@ new Promise((resolve, reject) => {
 
 Ijrochining atrofidagi "ko'rinmas `try..catch`" avtomatik ravishda xatoni ushlaydi va uni rad etish sifatida qabul qiladi.
 
-Bu nafaqat ijrochida, balki uning ishlovchilarida ham bo'ladi. Agar biz `.then` ishlov beruvchisiga `throw` qo'ysak, bu rad etilgan va'dani anglatadi, shuning uchun boshqaruv eng yaqin xato ishlov beruvchiga sakraydi.
+Bu nafaqat ijrochida, balki uning ishlovchilarida ham bo'ladi. Agar biz `.then` ishlov beruvchisiga `throw` qo'ysak, bu rad etilgan promiseni anglatadi, shuning uchun boshqaruv eng yaqin xato ishlov beruvchiga sakraydi.
 
 Mana bir misol:
 
@@ -84,7 +84,7 @@ new Promise((resolve, reject) => {
   resolve("ok");
 }).then((result) => {
 *!*
-  throw new Error("Whoops!"); // va'dani rad etadi
+  throw new Error("Whoops!"); // promiseni rad etadi
 */!*
 }).catch(alert); // Error: Whoops!
 ```
@@ -107,7 +107,7 @@ Yakuniy `.catch` nafaqat aniq rad etishlarni, balki yuqoridagi ishlovchilarda va
 
 Biz allaqachon payqaganimizdek, `.catch` o'zini `try..catch` kabi tutadi. Biz istagancha `.then` ishlovchilarga ega bo'lishimiz mumkin, so'ngra ularning barchasida xatolarni boshqarish uchun oxirida bitta `.catch` dan foydalanishimiz mumkin.
 
-Muntazam ravishda `try..catch` da biz xatoni tahlil qilamiz va agar uni uddalay olmasak, uni qayta tiklaymiz. Xuddi shu narsa va'dalar uchun ham mumkin.
+Muntazam ravishda `try..catch` da biz xatoni tahlil qilamiz va agar uni uddalay olmasak, uni qayta tiklaymiz. Xuddi shu narsa promiselar uchun ham mumkin.
 
 Agar biz `.catch` ichiga `throw` qo'ysak, boshqaruv keyingi eng yaqin xato ishlovchilariga o'tadi. Agar biz xatoga yo'l qo'ysak va odatdagidek tugatsak, u eng yaqin muvaffaqiyatli `.then` da davom etadi.
 
@@ -164,7 +164,7 @@ Quyidagi bo'limda biz qayta ko'rib chiqishning amaliy namunasini ko'rib chiqamiz
 
 Keling, foydalanuvchini yuklash misoli uchun xatolar bilan ishlashni yaxshilaymiz.
 
-[fetch](mdn:api/WindowOrWorkerGlobalScope/fetch) tomonidan qaytarilgan va'da so'rov yuborish imkonsiz bo'lganda rad etadi. Masalan, masofaviy server mavjud emas yoki URL manzili noto'g'ri. Ammo agar masofaviy server 404 yoki hatto 500 xatosi bilan javob bersa, u to'g'ri javob deb hisoblanadi.
+[fetch](mdn:api/WindowOrWorkerGlobalScope/fetch) tomonidan qaytarilgan promise so'rov yuborish imkonsiz bo'lganda rad etadi. Masalan, masofaviy server mavjud emas yoki URL manzili noto'g'ri. Ammo agar masofaviy server 404 yoki hatto 500 xatosi bilan javob bersa, u to'g'ri javob deb hisoblanadi.
 
 Agar server JSON-ga tegishli bo'lmagan sahifani `(*)` satrida 500 xatosi bilan qaytarsa nima bo'ladi? Agar bunday foydalanuvchi bo'lmasa va github 404 xatosi bo'lgan sahifani `(**)` ga qaytarsa nima bo'ladi?
 
@@ -256,11 +256,11 @@ Yoki biz zanjirning oxiriga xato ishlov beruvchini qo'shishni unutishimiz mumkin
 new Promise(function () {
   noSuchFunction(); // Bu erda xato (bunday funktsiya yo'q)
 }).then(() => {
-  // nol yoki ko'plab va'da beruvchi ishlovchilar
+  // nol yoki ko'plab promise beruvchi ishlovchilar
 }); // oxirida .catch siz!
 ```
 
-Xato bo'lsa, va'da holati "rad etilgan" bo'lib qoladi va ijro eng yaqin rad etuvchiga o'tishi kerak. Ammo yuqoridagi misollarda bunday ishlov beruvchi yo'q. Shunday qilib, xato "tiqilib qoladi".
+Xato bo'lsa, promise holati "rad etilgan" bo'lib qoladi va ijro eng yaqin rad etuvchiga o'tishi kerak. Ammo yuqoridagi misollarda bunday ishlov beruvchi yo'q. Shunday qilib, xato "tiqilib qoladi".
 
 Amalda, xuddi odatdagi ishlov berilmagan xatolar singari, bu ham biron bir narsa noto'g'ri ketganligini anglatadi, ehtimol skript o'lgan.
 
@@ -272,7 +272,7 @@ Brauzerda biz `unhandledrejection` hodisasi yordamida bunday xatolarga yo'l qo'y
 *!*
 window.addEventListener('unhandledrejection', function(event) {
   // hodisa obyekti ikkita maxsus xususiyatga ega:
-  alert(event.promise); // [object Promise] - xatoni keltirib chiqargan va'da
+  alert(event.promise); // [object Promise] - xatoni keltirib chiqargan promise
   alert(event.reason); // Error: Whoops! - ishlov berilmagan xato obyekti
 });
 */!*
@@ -292,7 +292,7 @@ Node.js kabi brauzerdan tashqari muhitda ishlov berilmagan xatolarni kuzatib bor
 
 ## Xulosa
 
-- `.catch` tutqichlari har qanday rad etishni va'da qiladi: `reject()` chaqiruvi yoki ishlov beruvchiga xato tashlanadi.
+- `.catch` tutqichlari har qanday rad etishni tutib qoladi: `reject()` chaqiruvi yoki ishlov beruvchiga xato tashlanadi.
 - Biz xatolarni ko'rib chiqishni va ularni qanday boshqarishni bilishni xohlagan joylarga `.catch` ni aniq joylashtirishimiz kerak. Ishlovchi xatolarni tahlil qilishi kerak (maxsus xato klasslari yordam beradi) va noma'lumlarini qayta tiklashi kerak.
 - Xatolarni qanday hal qilishni bilmasak, `.catch` dan foydalanmaslik odatiy holdir (barcha xatolar tiklanmaydi).
 - Qanday bo'lmasin, biz ishlov berilmagan xatolarni kuzatib borish va ular haqida foydalanuvchini (va ehtimol bizning serverimiz) xabardor qilish uchun `unhandledrejection` voqea ishlovchisiga ega bo'lishimiz kerak (brauzerlar va boshqa muhitlar uchun analoglar), shunda bizning dasturimiz hech qachon "shunchaki o'lmaydi" .
@@ -333,6 +333,6 @@ demoGithubUser();
 
 Bu yerda `(1)` satrida biz hujjatni xiralashtirish orqali yuklanishni ko'rsatamiz. Usul muhim emas, buning o'rniga har qanday ko'rsatkichni ishlatishi mumkin.
 
-Va'da bajarilgandan so'ng, u muvaffaqiyatli fetch yoki xato bo'ladimi, `finally` `(2)` satrida boshlanadi va ko'rsatkichni to'xtatadi.
+Promise bajarilgandan so'ng, u muvaffaqiyatli fetch yoki xato bo'ladimi, `finally` `(2)` satrida boshlanadi va ko'rsatkichni to'xtatadi.
 
-`finally` dan nol-tanaffus va'dasini qaytarish bilan `(*)` brauzerning kichik hiyla-nayranglari mavjud. Buning sababi shundaki, ba'zi brauzerlar (masalan, Chrome) hujjatdagi o'zgarishlarni bo'yash uchun tashqarida va'da beruvchilarga "biroz vaqt" kerak. Shunday qilib, zanjirga o'tmasdan oldin ko'rsatkich vizual ravishda to'xtatilishini ta'minlaydi.
+`finally` dan nol-tanaffus promiseni qaytarish bilan `(*)` brauzerning kichik hiyla-nayranglari mavjud. Buning sababi shundaki, ba'zi brauzerlar (masalan, Chrome) hujjatdagi o'zgarishlarni bo'yash uchun tashqarida promise qiymatlariga "biroz vaqt" kerak. Shunday qilib, zanjirga o'tmasdan oldin ko'rsatkich vizual ravishda to'xtatilishini ta'minlaydi.
